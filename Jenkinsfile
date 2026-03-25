@@ -208,8 +208,6 @@ pipeline {
                 cleanWs()
             }
         }
-        failure {
-           
-        }
+       
     }
 }
