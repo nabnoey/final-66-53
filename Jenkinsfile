@@ -37,7 +37,15 @@ pipeline {
             when { expression { params.ACTION == 'Build & Deploy' } }
             steps {
                 echo "Checking out code..."
-                checkout scm
+              checkout([$class: 'GitSCM', 
+            branches: scm.branches, 
+            doGenerateSubmoduleConfigurations: false, 
+            extensions: [], 
+            userRemoteConfigs: [[
+                url: 'https://github.com/nabnoey/final-66-53.git', 
+                credentialsId: 'final-66-53' // ใส่ ID ที่คุณตั้งไว้ใน Jenkins
+            ]]
+        ])
             }
         }
 
