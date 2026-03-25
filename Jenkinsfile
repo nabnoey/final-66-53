@@ -51,7 +51,7 @@ pipeline {
 
         // Stage 2: Install & Test (ใช้ Python container เหมือนแนวคิด Express/Node test)
      stage('Install & Test') {
-    when { expression { params.ACTION == 'Build & Deploy' } }
+    // when { expression { params.ACTION == 'Build & Deploy' } }
     steps {
         echo "Running tests inside a consistent Docker environment..."
         script {
@@ -101,37 +101,10 @@ pipeline {
         }
 
         // Deploy to DEV (Local Docker) — สำหรับ branch develop
-        stage('Deploy to DEV (Local Docker)') {
-            when {
-                expression { params.ACTION == 'Build & Deploy' }
-               
-            }
-            steps {
-                script {
-                    def deployCmd = """
-                            echo "Deploying container ${DEV_APP_NAME} from latest image..."
-                            docker pull ${DOCKER_REPO}:${env.IMAGE_TAG}
-                            docker stop ${DEV_APP_NAME} || true
-                            docker rm ${DEV_APP_NAME} || true
-                            docker run -d --name ${DEV_APP_NAME} -p ${DEV_HOST_PORT}:5000 ${DOCKER_REPO}:${env.IMAGE_TAG}
-                            docker ps --filter name=${DEV_APP_NAME} --format "table {{.Names}}\\t{{.Image}}\\t{{.Status}}"
-                        """
-                    sh deployCmd
-                }
-            }
-            post {
-                success {
-                    sendNotificationToN8n('success', 'Deploy to DEV (Local Docker)', env.IMAGE_TAG, env.DEV_APP_NAME, env.DEV_HOST_PORT)
-                }
-            }
-        }
 
         // Approval ก่อน Deploy ไป PROD
         stage('Approval for Production') {
-            when {
-                expression { params.ACTION == 'Build & Deploy' }
-                branch 'main'
-            }
+           
             steps {
                 timeout(time: 1, unit: 'HOURS') {
                     input message: "Deploy image tag '${env.IMAGE_TAG}' to PRODUCTION (Local Docker on port ${PROD_HOST_PORT})?"
