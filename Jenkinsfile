@@ -147,20 +147,7 @@ pipeline {
             }
         }
     }
-    post {
-        // เปลี่ยนจาก success เป็น always หรือจัดการเงื่อนไขให้ดี 
-        // เพราะถ้า docker พัง มันจะไม่เข้า success ครับ
-        always {
-            script {
-                // ส่ง Notification เฉพาะกรณีที่ต้องการจริงๆ
-                try {
-                    sendNotificationToN8n('info', 'Production Deploy Attempted', env.IMAGE_TAG, env.PROD_APP_NAME, env.PROD_HOST_PORT)
-                } catch (err) {
-                    echo "Notification failed: ${err.message}"
-                }
-            }
-        }
-    }
+   
 }
         // Rollback เมื่อเลือก ACTION = Rollback
         stage('Execute Rollback') {
@@ -185,11 +172,7 @@ pipeline {
                     """
                 }
             }
-            post {
-                success {
-                    sendNotificationToN8n('success', "Rollback ${params.ROLLBACK_TARGET.toUpperCase()}", params.ROLLBACK_TAG, env.TARGET_APP_NAME, env.TARGET_HOST_PORT)
-                }
-            }
+            
         }
     }
 
