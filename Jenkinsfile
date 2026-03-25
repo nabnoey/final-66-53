@@ -12,7 +12,7 @@ pipeline {
 
     environment {
         DOCKER_HUB_CREDENTIALS_ID = 'final-66-53'
-        DOCKER_REPO               = "nabnoey/flask-docker-app"
+        DOCKER_REPO               = "nabnoey/final-66-53"
 
         // DEV / PROD (Local Simulation)
         DEV_APP_NAME   = "flask-app-dev"
