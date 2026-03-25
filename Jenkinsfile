@@ -213,6 +213,21 @@ pipeline {
                 cleanWs()
             }
         }
+
+        def sendNotificationToN8n(status, stage, imageTag, appName, port) {
+    def webhookUrl = 'ใส่_URL_ของ_n8n_ตรงนี้'
+    def payload = """
+    {
+        "status": "${status}",
+        "stage": "${stage}",
+        "image": "${imageTag}",
+        "appName": "${appName}",
+        "port": "${port}",
+        "developer": "Noey"
+    }
+    """
+    sh "curl -X POST -H 'Content-Type: application/json' -d '${payload}' ${webhookUrl}"
+}
        
     }
 }
