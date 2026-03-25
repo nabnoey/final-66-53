@@ -9,7 +9,7 @@ services:
     volumes:
       # เชื่อมโค้ดจากเครื่องเราเข้าไปใน container แบบ Real-time เพื่อใช้ auto-reload ของ Flask
       - ./:/app
-      - /var/run/docker.sock:/var/run/docker.sock
+     
     environment:
       # เปิดโหมดพัฒนาและเปิด auto-reload
       FLASK_APP: app.py
